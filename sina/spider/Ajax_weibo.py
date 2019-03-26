@@ -9,12 +9,12 @@ from time import sleep
 connection = pymysql.connect(host='localhost',
                              port=3306,
                              user='root',
-                             passwd='zkyr1006',
-                             db='python',
+                             passwd='123456a?',
+                             db='wangyun',
                              charset='utf8')
 
 cursor = connection.cursor()
-sql = "USE python;"
+sql = "USE wangyun;"
 cursor.execute(sql)
 connection.commit()
 
@@ -30,19 +30,21 @@ headers = {
 def create_sheet(bozhu):
     try:
         weibo = '''
-            CREATE TABLE weibo(
+            CREATE TABLE weib{0} (
                 ID  VARCHAR (255) NOT NULL PRIMARY KEY,
                 text VARCHAR (255),
                 attitudes VARCHAR (255),
                 comments VARCHAR (255), 
                 reposts VARCHAR (255) 
             )
-        '''
+        '''.format(bozhu)
+        print(weibo)
         # 序号 INT  NOT NULL PRIMARY KEY AUTO_INCREMENT,
         cursor.execute(weibo)
         connection.commit()
-    except:
-        pass
+    except ValueError:
+        print(ValueError)
+
 
 
 def url_get():
@@ -85,7 +87,7 @@ def get_page(page):
     # 查询字符串
     params = {
         'type': 'uid',
-        'value': '2145291155',
+        'value': 'jinan',
         'containerid': '1076032145291155',
         'page': page
     }
@@ -133,6 +135,7 @@ def parse_page(json):
 
 
 if __name__ == '__main__':
+    # create_sheet('sunjiyun26')
     for page in range(1, 17):
         json = get_page(page)
         results = parse_page(json)
